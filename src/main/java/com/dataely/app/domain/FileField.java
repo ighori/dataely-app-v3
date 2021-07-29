@@ -4,23 +4,25 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A FileField.
  */
 @Entity
-@Table(name = "file_field")
+@Table(name = "file_field", uniqueConstraints = { @UniqueConstraint(columnNames = { "field_name", "file_info_id" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class FileField implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "file_f_id_seq", sequenceName = "file_f_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "file_f_id_seq")
     private Long id;
 
     @NotNull
@@ -33,13 +35,16 @@ public class FileField implements Serializable {
     @Column(name = "field_size")
     private Long fieldSize;
 
+    @CreationTimestamp
     @Column(name = "creation_date")
     private Instant creationDate;
 
+    @UpdateTimestamp
     @Column(name = "last_updated")
     private Instant lastUpdated;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "fileSource", "fileConfig" }, allowSetters = true)
     private FileInfo fileInfo;
 

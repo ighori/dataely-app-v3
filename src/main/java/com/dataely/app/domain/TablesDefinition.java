@@ -6,23 +6,25 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A TablesDefinition.
  */
 @Entity
-@Table(name = "tables_definition")
+@Table(name = "tables_definition", uniqueConstraints = { @UniqueConstraint(columnNames = { "table_name", "ds_schema_id" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TablesDefinition implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "tbl_id_seq", sequenceName = "tbl_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_id_seq")
     private Long id;
 
     @NotNull
@@ -62,13 +64,16 @@ public class TablesDefinition implements Serializable {
     @Column(name = "col_cnt_ix")
     private Integer colCntIX;
 
+    @CreationTimestamp
     @Column(name = "creation_date")
     private Instant creationDate;
 
+    @UpdateTimestamp
     @Column(name = "last_updated")
     private Instant lastUpdated;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "dataSource", "dsSchemaRelationships", "tablesDefinitions" }, allowSetters = true)
     private DsSchema dsSchema;
 

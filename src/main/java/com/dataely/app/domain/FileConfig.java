@@ -6,15 +6,17 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A FileConfig.
  */
 @Entity
-@Table(name = "file_config")
+@Table(name = "file_config", uniqueConstraints = { @UniqueConstraint(columnNames = { "name" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class FileConfig implements Serializable {
 
@@ -68,9 +70,11 @@ public class FileConfig implements Serializable {
     @Column(name = "file_type")
     private String fileType;
 
+    @CreationTimestamp
     @Column(name = "creation_date")
     private Instant creationDate;
 
+    @UpdateTimestamp
     @Column(name = "last_updated")
     private Instant lastUpdated;
 

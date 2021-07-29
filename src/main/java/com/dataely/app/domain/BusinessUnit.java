@@ -6,23 +6,25 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A BusinessUnit.
  */
 @Entity
-@Table(name = "business_unit")
+@Table(name = "business_unit", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "organization_id" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class BusinessUnit implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "bus_id_seq", sequenceName = "bus_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bus_id_seq")
     private Long id;
 
     @NotNull
@@ -32,9 +34,11 @@ public class BusinessUnit implements Serializable {
     @Column(name = "detail")
     private String detail;
 
+    @CreationTimestamp
     @Column(name = "creation_date")
     private Instant creationDate;
 
+    @UpdateTimestamp
     @Column(name = "last_updated")
     private Instant lastUpdated;
 
@@ -43,8 +47,10 @@ public class BusinessUnit implements Serializable {
     @JsonIgnoreProperties(value = { "environments", "businessUnit" }, allowSetters = true)
     private Set<Application> applications = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonIgnoreProperties(value = { "user", "businessUnits" }, allowSetters = true)
+    @JoinColumn
+    @NotNull
     private Organization organization;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

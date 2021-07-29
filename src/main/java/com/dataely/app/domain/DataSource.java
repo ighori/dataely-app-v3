@@ -8,23 +8,25 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A DataSource.
  */
 @Entity
-@Table(name = "data_source")
+@Table(name = "data_source", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "environment_id" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DataSource implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "ds_id_seq", sequenceName = "ds_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ds_id_seq")
     private Long id;
 
     @NotNull
@@ -88,13 +90,16 @@ public class DataSource implements Serializable {
     @Column(name = "sid")
     private String sid;
 
+    @CreationTimestamp
     @Column(name = "creation_date")
     private Instant creationDate;
 
+    @UpdateTimestamp
     @Column(name = "last_updated")
     private Instant lastUpdated;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "contact", "application", "dataSources", "fileSources", "analyzerJobs" }, allowSetters = true)
     private Environment environment;
 

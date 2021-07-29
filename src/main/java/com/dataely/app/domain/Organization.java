@@ -6,23 +6,25 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A Organization.
  */
 @Entity
-@Table(name = "organization")
+@Table(name = "organization", uniqueConstraints = { @UniqueConstraint(columnNames = { "name" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Organization implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "organisation_id_seq", sequenceName = "organisation_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "organisation_id_seq")
     private Long id;
 
     @NotNull
@@ -32,15 +34,18 @@ public class Organization implements Serializable {
     @Column(name = "detail")
     private String detail;
 
+    @CreationTimestamp
     @Column(name = "creation_date")
     private Instant creationDate;
 
+    @UpdateTimestamp
     @Column(name = "last_updated")
     private Instant lastUpdated;
 
-    @OneToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnoreProperties(value = { "user", "businessUnits" }, allowSetters = true)
+    @JoinColumn
     @NotNull
-    @JoinColumn(unique = true)
     private User user;
 
     @OneToMany(mappedBy = "organization")
@@ -115,16 +120,16 @@ public class Organization implements Serializable {
     }
 
     public User getUser() {
-        return this.user;
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Organization user(User user) {
         this.setUser(user);
         return this;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Set<BusinessUnit> getBusinessUnits() {

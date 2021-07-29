@@ -5,15 +5,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A AnalyzerJob.
  */
 @Entity
-@Table(name = "analyzer_job")
+@Table(name = "analyzer_job", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "environment_id" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AnalyzerJob implements Serializable {
 
@@ -44,9 +46,11 @@ public class AnalyzerJob implements Serializable {
     @Column(name = "previous_run_time")
     private String previousRunTime;
 
+    @CreationTimestamp
     @Column(name = "creation_date")
     private Instant creationDate;
 
+    @UpdateTimestamp
     @Column(name = "last_updated")
     private Instant lastUpdated;
 

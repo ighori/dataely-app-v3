@@ -62,7 +62,7 @@ spring:
     database-platform: tech.jhipster.domain.util.FixedH2Dialect
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
-    contexts: dev, faker
+    contexts: dev
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
@@ -99,7 +99,7 @@ jhipster:
     allowed-origins: 'http://localhost:8100,http://localhost:9000,http://localhost:9060'
     allowed-methods: '*'
     allowed-headers: '*'
-    exposed-headers: 'Authorization,Link,X-Total-Count,X-${jhipster.clientApp.name}-alert,X-${jhipster.clientApp.name}-error,X-${jhipster.clientApp.name}-params'
+    exposed-headers: 'Authorization,Link,X-Total-Count,X-${dataely.clientApp.name}-alert,X-${dataely.clientApp.name}-error,X-${dataely.clientApp.name}-params'
     allow-credentials: true
     max-age: 1800
   logging:

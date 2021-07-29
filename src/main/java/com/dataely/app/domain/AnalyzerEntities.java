@@ -3,15 +3,17 @@ package com.dataely.app.domain;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A AnalyzerEntities.
  */
 @Entity
-@Table(name = "analyzer_entities")
+@Table(name = "analyzer_entities", uniqueConstraints = { @UniqueConstraint(columnNames = { "name" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AnalyzerEntities implements Serializable {
 
@@ -32,9 +34,11 @@ public class AnalyzerEntities implements Serializable {
     @Column(name = "entity_name")
     private String entityName;
 
+    @CreationTimestamp
     @Column(name = "creation_date")
     private Instant creationDate;
 
+    @UpdateTimestamp
     @Column(name = "last_updated")
     private Instant lastUpdated;
 

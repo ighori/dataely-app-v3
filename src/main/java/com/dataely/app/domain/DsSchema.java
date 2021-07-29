@@ -6,23 +6,25 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A DsSchema.
  */
 @Entity
-@Table(name = "ds_schema")
+@Table(name = "ds_schema", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "data_source_id" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DsSchema implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "sch_id_seq", sequenceName = "sch_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sch_id_seq")
     private Long id;
 
     @NotNull
@@ -38,13 +40,16 @@ public class DsSchema implements Serializable {
     @Column(name = "table_rel_count")
     private Integer tableRelCount;
 
+    @CreationTimestamp
     @Column(name = "creation_date")
     private Instant creationDate;
 
+    @UpdateTimestamp
     @Column(name = "last_updated")
     private Instant lastUpdated;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "environment", "dsSchemas", "analyzerJobs", "analyzerResults" }, allowSetters = true)
     private DataSource dataSource;
 

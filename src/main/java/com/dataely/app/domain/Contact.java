@@ -3,12 +3,16 @@ package com.dataely.app.domain;
 import com.dataely.app.domain.enumeration.EContactType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A Contact.
@@ -21,8 +25,8 @@ public class Contact implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "cnt_id_seq", sequenceName = "cnt_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cnt_id_seq")
     private Long id;
 
     @NotNull
@@ -77,6 +81,14 @@ public class Contact implements Serializable {
 
     @Column(name = "image_content_type")
     private String imageContentType;
+
+    @CreationTimestamp
+    @Column(name = "creation_date")
+    private Instant creationDate;
+
+    @UpdateTimestamp
+    @Column(name = "last_updated")
+    private Instant lastUpdated;
 
     @OneToMany(mappedBy = "contact")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -334,6 +346,22 @@ public class Contact implements Serializable {
             return false;
         }
         return id != null && id.equals(((Contact) o).id);
+    }
+
+    public Instant getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Instant creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Instant getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Instant lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     @Override

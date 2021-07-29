@@ -7,23 +7,25 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A FileSource.
  */
 @Entity
-@Table(name = "file_source")
+@Table(name = "file_source", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "environment_id" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class FileSource implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "file_s_id_seq", sequenceName = "file_s_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "file_s_id_seq")
     private Long id;
 
     @NotNull
@@ -74,13 +76,16 @@ public class FileSource implements Serializable {
     @Column(name = "remote_path")
     private String remotePath;
 
+    @CreationTimestamp
     @Column(name = "creation_date")
     private Instant creationDate;
 
+    @UpdateTimestamp
     @Column(name = "last_updated")
     private Instant lastUpdated;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "contact", "application", "dataSources", "fileSources", "analyzerJobs" }, allowSetters = true)
     private Environment environment;
 

@@ -4,23 +4,25 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A RelatedTableColumn.
  */
 @Entity
-@Table(name = "related_table_column")
+@Table(name = "related_table_column", uniqueConstraints = { @UniqueConstraint(columnNames = { "column_name", "related_table_id" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class RelatedTableColumn implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "rel_c_id_seq", sequenceName = "rel_c_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rel_c_id_seq")
     private Long id;
 
     @NotNull
@@ -30,13 +32,16 @@ public class RelatedTableColumn implements Serializable {
     @Column(name = "column_type")
     private String columnType;
 
+    @CreationTimestamp
     @Column(name = "creation_date")
     private Instant creationDate;
 
+    @UpdateTimestamp
     @Column(name = "last_updated")
     private Instant lastUpdated;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "tablesDefinition" }, allowSetters = true)
     private RelatedTable relatedTable;
 

@@ -8,23 +8,25 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A Environment.
  */
 @Entity
-@Table(name = "environment")
+@Table(name = "environment", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "application_id" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Environment implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "env_id_seq", sequenceName = "env_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "env_id_seq")
     private Long id;
 
     @NotNull
@@ -44,9 +46,11 @@ public class Environment implements Serializable {
     @Column(name = "purpose", nullable = false)
     private EEnvPurpose purpose;
 
+    @CreationTimestamp
     @Column(name = "creation_date")
     private Instant creationDate;
 
+    @UpdateTimestamp
     @Column(name = "last_updated")
     private Instant lastUpdated;
 
@@ -54,7 +58,8 @@ public class Environment implements Serializable {
     @JsonIgnoreProperties(value = { "environments" }, allowSetters = true)
     private Contact contact;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "environments", "businessUnit" }, allowSetters = true)
     private Application application;
 
