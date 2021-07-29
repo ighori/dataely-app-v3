@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet author="imran (generated)" id="1627101752045-23">
+        <addUniqueConstraint columnNames="name, app_type, business_unit_id" constraintName="UKdk9mydi9op8lm4m1jedglu8ct" tableName="application"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627101752045-24">
+        <dropUniqueConstraint constraintName="UKHODUXRGY7KE4NW8KYVF1IF3BT" tableName="APPLICATION"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627101752045-18">
+        <addNotNullConstraint columnDataType="bigint" columnName="business_unit_id" tableName="application" validate="true"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627101752045-19">
+        <addNotNullConstraint columnDataType="bigint" columnName="data_source_id" tableName="ds_schema" validate="true"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627101752045-20">
+        <addNotNullConstraint columnDataType="bigint" columnName="ds_schema_id" tableName="ds_schema_relationship" validate="true"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627101752045-21">
+        <addNotNullConstraint columnDataType="bigint" columnName="environment_id" tableName="data_source" validate="true"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627101752045-22">
+        <addNotNullConstraint columnDataType="bigint" columnName="organization_id" tableName="business_unit" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

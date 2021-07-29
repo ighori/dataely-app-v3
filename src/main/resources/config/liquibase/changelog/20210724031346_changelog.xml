@@ -1,0 +1,60 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet author="imran (generated)" id="1627096448592-2">
+        <addUniqueConstraint columnNames="field_name, file_info_id" constraintName="UK1kcfb9gxoo025k7e54udja24l" tableName="file_field"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-3">
+        <addUniqueConstraint columnNames="column_name, tables_definition_id" constraintName="UK1qce76t20brt63xic50cjmr58" tableName="table_column"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-4">
+        <addUniqueConstraint columnNames="name" constraintName="UK5tdyd09exoe6k04auylkxxmek" tableName="analyzer_recognizers"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-5">
+        <addUniqueConstraint columnNames="name, data_source_id" constraintName="UK5tqagnlj477xqd8wri8l1q02e" tableName="ds_schema"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-6">
+        <addUniqueConstraint columnNames="name" constraintName="UK8j5y8ipk73yx2joy9yr653c9t" tableName="organization"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-7">
+        <addUniqueConstraint columnNames="name" constraintName="UKbvfbejx946a2txiyg2mtlj2m1" tableName="analyzer_entities"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-8">
+        <addUniqueConstraint columnNames="name" constraintName="UKby9jeh63jjsnwrheucurcpp5j" tableName="analyzer_result"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-9">
+        <addUniqueConstraint columnNames="name, organization_id" constraintName="UKeb3h0tqco5ckqw43c606hk7t1" tableName="business_unit"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-10">
+        <addUniqueConstraint columnNames="column_name, related_table_id" constraintName="UKeq8sjy3o44kpn57hr74bq7hij" tableName="related_table_column"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-11">
+        <addUniqueConstraint columnNames="name" constraintName="UKhknycbqnhgktjaoulp04kbt8j" tableName="analyzer_ad_hoc_recognizers"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-12">
+        <addUniqueConstraint columnNames="name, business_unit_id" constraintName="UKhoduxrgy7ke4nw8kyvf1if3bt" tableName="application"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-13">
+        <addUniqueConstraint columnNames="name, environment_id" constraintName="UKi1gmr5ge5r67n8xvp077k6k6q" tableName="data_source"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-14">
+        <addUniqueConstraint columnNames="name" constraintName="UKlqwxptl1b3m46ivcscskmaqhm" tableName="file_config"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-15">
+        <addUniqueConstraint columnNames="name, environment_id" constraintName="UKmpr2oiuyv0nvyjwy59p68n4l4" tableName="analyzer_job"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-16">
+        <addUniqueConstraint columnNames="table_name, ds_schema_id" constraintName="UKnn7kjunrvd4i57dalbtn2emln" tableName="tables_definition"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-17">
+        <addUniqueConstraint columnNames="name, application_id" constraintName="UKouyw1r0rks1e30lsu6xhys1gn" tableName="environment"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-18">
+        <addUniqueConstraint columnNames="name, environment_id" constraintName="UKpbh0q9tfswtmas5w2wf9ip3q6" tableName="file_source"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-19">
+        <addUniqueConstraint columnNames="name, file_source_id" constraintName="UKrduqy23c6yrnpkddjukxk2v1y" tableName="file_info"/>
+    </changeSet>
+    <changeSet author="imran (generated)" id="1627096448592-20">
+        <addUniqueConstraint columnNames="table_name, tables_definition_id" constraintName="UKsfgfw26d38fnd3s8qnn5sjoqu" tableName="related_table"/>
+    </changeSet>
+</databaseChangeLog>
