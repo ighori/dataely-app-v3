@@ -4,6 +4,7 @@ const { merge } = require('webpack-merge');
 const { VueLoaderPlugin } = require('vue-loader');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const vueLoaderConfig = require('./loader.conf');
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir);
@@ -103,6 +104,7 @@ module.exports = env =>
       },
       plugins: [
         new VueLoaderPlugin(),
+        new VuetifyLoaderPlugin(),
         new CopyWebpackPlugin({
           patterns: [
             {
@@ -113,7 +115,7 @@ module.exports = env =>
             },
             { from: './node_modules/axios/dist/axios.min.js', to: 'swagger-ui/' },
             { from: './src/main/webapp/swagger-ui/', to: 'swagger-ui/' },
-            { from: './src/main/webapp/content/', to: 'content/' },
+            { from: './src/main/webapp/app/content/', to: 'content/' },
             { from: './src/main/webapp/favicon.ico', to: 'favicon.ico' },
             {
               from: './src/main/webapp/manifest.webapp',

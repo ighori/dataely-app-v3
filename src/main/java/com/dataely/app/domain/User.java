@@ -71,6 +71,17 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+        name = "jhi_user_ability",
+        joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
+        inverseJoinColumns = { @JoinColumn(name = "ability_id", referencedColumnName = "id") }
+    )
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @BatchSize(size = 20)
+    private Set<Ability> abilities = new HashSet<>();
+
     public String getId() {
         return id;
     }
@@ -142,6 +153,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Set<Ability> getAbilities() {
+        return abilities;
+    }
+
+    public void setAbilities(Set<Ability> abilities) {
+        this.abilities = abilities;
     }
 
     @Override

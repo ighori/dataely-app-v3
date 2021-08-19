@@ -27,7 +27,7 @@ const webpackConfig = {
   },
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   entry: {
-    global: './src/main/webapp/content/scss/global.scss',
+    global: './src/main/webapp/app/content/scss/global.scss',
     main: './src/main/webapp/app/main',
   },
   output: {

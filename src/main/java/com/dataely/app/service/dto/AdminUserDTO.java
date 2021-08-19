@@ -1,6 +1,7 @@
 package com.dataely.app.service.dto;
 
 import com.dataely.app.config.Constants;
+import com.dataely.app.domain.Ability;
 import com.dataely.app.domain.Authority;
 import com.dataely.app.domain.User;
 import java.time.Instant;
@@ -48,6 +49,8 @@ public class AdminUserDTO {
 
     private Set<String> authorities;
 
+    private Set<String> abilities;
+
     public AdminUserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -66,6 +69,7 @@ public class AdminUserDTO {
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
         this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet());
+        this.abilities = user.getAbilities().stream().map(Ability::getName).collect(Collectors.toSet());
     }
 
     public String getId() {
@@ -172,6 +176,14 @@ public class AdminUserDTO {
         this.authorities = authorities;
     }
 
+    public Set<String> getAbilities() {
+        return abilities;
+    }
+
+    public void setAbilities(Set<String> abilities) {
+        this.abilities = abilities;
+    }
+
     // prettier-ignore
     @Override
     public String toString() {
@@ -188,6 +200,7 @@ public class AdminUserDTO {
             ", lastModifiedBy='" + lastModifiedBy + '\'' +
             ", lastModifiedDate=" + lastModifiedDate +
             ", authorities=" + authorities +
+            ", abilities=" + abilities +
             "}";
     }
 }

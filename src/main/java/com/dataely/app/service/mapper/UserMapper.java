@@ -1,5 +1,6 @@
 package com.dataely.app.service.mapper;
 
+import com.dataely.app.domain.Ability;
 import com.dataely.app.domain.Authority;
 import com.dataely.app.domain.User;
 import com.dataely.app.service.dto.AdminUserDTO;
@@ -55,6 +56,9 @@ public class UserMapper {
             user.setLangKey(userDTO.getLangKey());
             Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
             user.setAuthorities(authorities);
+            Set<Ability> abilities = this.abilitiesFromStrings(userDTO.getAbilities());
+            user.setAbilities(abilities);
+
             return user;
         }
     }
@@ -77,6 +81,26 @@ public class UserMapper {
         }
 
         return authorities;
+    }
+
+    private Set<Ability> abilitiesFromStrings(Set<String> abilitiesAsString) {
+        Set<Ability> abilities = new HashSet<>();
+
+        if (abilitiesAsString != null) {
+            abilities =
+                abilitiesAsString
+                    .stream()
+                    .map(
+                        string -> {
+                            Ability auth = new Ability();
+                            auth.setName(string);
+                            return auth;
+                        }
+                    )
+                    .collect(Collectors.toSet());
+        }
+
+        return abilities;
     }
 
     public User userFromId(String id) {

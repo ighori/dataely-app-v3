@@ -83,7 +83,6 @@ class OrganizationResourceIT {
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
         em.flush();
-        organization.setUser(user);
         return organization;
     }
 
@@ -103,7 +102,6 @@ class OrganizationResourceIT {
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
         em.flush();
-        organization.setUser(user);
         return organization;
     }
 

@@ -8,6 +8,7 @@ import { ToastPlugin } from 'bootstrap-vue';
 import router from './router';
 import * as config from './shared/config/config';
 import * as bootstrapVueConfig from './shared/config/config-bootstrap-vue';
+import vuetify from '@/plugins/vuetify';
 import JhiItemCountComponent from './shared/jhi-item-count.vue';
 import JhiSortIndicatorComponent from './shared/sort/jhi-sort-indicator.vue';
 import InfiniteLoading from 'vue-infinite-loading';
@@ -18,7 +19,10 @@ import ConfigurationService from '@/admin/configuration/configuration.service';
 import LoginService from './account/login.service';
 import AccountService from './account/account.service';
 
-import '../content/scss/vendor.scss';
+//import './content/scss/vendor.scss';
+import './plugins';
+
+import octaviaKit from '@/plugins/octavia.kit';
 
 import UserOAuth2Service from '@/entities/user/user.oauth2.service';
 /* tslint:disable */
@@ -47,10 +51,13 @@ import AnalyzerResultService from '@/entities/analyzer-result/analyzer-result.se
 import AnalyzerJobService from '@/entities/analyzer-job/analyzer-job.service';
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
 
+import store from '@/shared/config/store';
+
 /* tslint:enable */
 Vue.config.productionTip = false;
 config.initVueApp(Vue);
 config.initFortAwesome(Vue);
+Vue.use(octaviaKit);
 bootstrapVueConfig.initBootstrapVue(Vue);
 Vue.use(Vue2Filters);
 Vue.use(ToastPlugin);
@@ -58,7 +65,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('jhi-item-count', JhiItemCountComponent);
 Vue.component('jhi-sort-indicator', JhiSortIndicatorComponent);
 Vue.component('infinite-loading', InfiniteLoading);
-const store = config.initVueXStore(Vue);
+//const store = config.initVueXStore(Vue);
 
 const loginService = new LoginService();
 const accountService = new AccountService(store, (<any>Vue).cookie, router);
@@ -85,7 +92,7 @@ router.beforeEach((to, from, next) => {
 
 /* tslint:disable */
 new Vue({
-  el: '#app',
+  //el: '#app',
   components: { App },
   template: '<App/>',
   router,
@@ -123,4 +130,6 @@ new Vue({
     accountService: () => accountService,
   },
   store,
-});
+  vuetify,
+  render: h => h(App),
+}).$mount('#app');

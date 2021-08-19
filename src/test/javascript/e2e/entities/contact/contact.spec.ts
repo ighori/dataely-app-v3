@@ -29,7 +29,7 @@ describe('Contact e2e test', () => {
   let detailsPage: ContactDetailsPage;
   let listPage: ContactComponentsPage;
   let deleteDialog: ContactDeleteDialog;
-  const fileToUpload = '../../../../../main/webapp/content/images/logo-jhipster.png';
+  const fileToUpload = '../../../../../main/webapp/app/content/images/logo-jhipster.png';
   const absolutePath = path.resolve(__dirname, fileToUpload);
   let beforeRecordsCount = 0;
   const username = process.env.E2E_USERNAME ?? 'admin';

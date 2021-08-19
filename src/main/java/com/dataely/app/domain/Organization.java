@@ -42,12 +42,6 @@ public class Organization implements Serializable {
     @Column(name = "last_updated")
     private Instant lastUpdated;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnoreProperties(value = { "user", "businessUnits" }, allowSetters = true)
-    @JoinColumn
-    @NotNull
-    private User user;
-
     @OneToMany(mappedBy = "organization")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "applications", "organization" }, allowSetters = true)
@@ -117,19 +111,6 @@ public class Organization implements Serializable {
 
     public void setLastUpdated(Instant lastUpdated) {
         this.lastUpdated = lastUpdated;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Organization user(User user) {
-        this.setUser(user);
-        return this;
     }
 
     public Set<BusinessUnit> getBusinessUnits() {

@@ -9,7 +9,7 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = { UserMapper.class })
 public interface OrganizationMapper extends EntityMapper<OrganizationDTO, Organization> {
-    @Mapping(target = "user", source = "user", qualifiedByName = "login")
+    // @Mapping(target = "user", source = "user", qualifiedByName = "login")
     OrganizationDTO toDto(Organization s);
 
     @Named("name")

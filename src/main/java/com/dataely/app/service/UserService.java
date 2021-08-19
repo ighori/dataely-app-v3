@@ -1,8 +1,10 @@
 package com.dataely.app.service;
 
 import com.dataely.app.config.Constants;
+import com.dataely.app.domain.Ability;
 import com.dataely.app.domain.Authority;
 import com.dataely.app.domain.User;
+import com.dataely.app.repository.AbilityRepository;
 import com.dataely.app.repository.AuthorityRepository;
 import com.dataely.app.repository.UserRepository;
 import com.dataely.app.security.SecurityUtils;
@@ -36,11 +38,19 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
+    private final AbilityRepository abilityRepository;
+
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(
+        UserRepository userRepository,
+        AuthorityRepository authorityRepository,
+        AbilityRepository abilityRepository,
+        CacheManager cacheManager
+    ) {
         this.userRepository = userRepository;
         this.authorityRepository = authorityRepository;
+        this.abilityRepository = abilityRepository;
         this.cacheManager = cacheManager;
     }
 
@@ -96,10 +106,23 @@ public class UserService {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
 
+    /**
+     * Gets a list of all the authorities.
+     * @return a list of all the authorities.
+     */
+    @Transactional(readOnly = true)
+    public List<String> getAbilities() {
+        return abilityRepository.findAll().stream().map(Ability::getName).collect(Collectors.toList());
+    }
+
     private User syncUserWithIdP(Map<String, Object> details, User user) {
         // save authorities in to sync user roles/groups between IdP and JHipster's local database
         Collection<String> dbAuthorities = getAuthorities();
         Collection<String> userAuthorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toList());
+
+        //    Collection<String> dbAbilities = getAbilities();
+        //    Collection<String> userAbilities = user.getAbilities().stream().map(Ability::getName).collect(Collectors.toList());
+
         for (String authority : userAuthorities) {
             if (!dbAuthorities.contains(authority)) {
                 log.debug("Saving authority '{}' in local database", authority);
@@ -107,7 +130,19 @@ public class UserService {
                 authorityToSave.setName(authority);
                 authorityRepository.save(authorityToSave);
             }
+            /*            for (String ability : userAbilities) {
+                if (dbAuthorities.contains("ROLE_ADMIN")) {
+                    log.debug("Saving ability '{}' in local database", ability);
+                    Ability abilityToSave = new Ability();
+                    abilityToSave.setName(ability);
+                    abilityRepository.save(abilityToSave);
+                }
+            }*/
         }
+
+        //   log.info(String.valueOf(dbAbilities));
+        //   log.info(String.valueOf(userAbilities));
+
         // save account in to sync users between IdP and JHipster's local database
         Optional<User> existingUser = userRepository.findOneByLogin(user.getLogin());
         if (existingUser.isPresent()) {
@@ -164,6 +199,7 @@ public class UserService {
                 )
                 .collect(Collectors.toSet())
         );
+
         return new AdminUserDTO(syncUserWithIdP(attributes, user));
     }
 

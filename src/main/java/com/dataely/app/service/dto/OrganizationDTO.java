@@ -21,7 +21,7 @@ public class OrganizationDTO implements Serializable {
 
     private Instant lastUpdated;
 
-    private UserDTO user;
+    // private UserDTO user;
 
     public Long getId() {
         return id;
@@ -63,14 +63,6 @@ public class OrganizationDTO implements Serializable {
         this.lastUpdated = lastUpdated;
     }
 
-    public UserDTO getUser() {
-        return user;
-    }
-
-    public void setUser(UserDTO user) {
-        this.user = user;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -101,7 +93,6 @@ public class OrganizationDTO implements Serializable {
             ", detail='" + getDetail() + "'" +
             ", creationDate='" + getCreationDate() + "'" +
             ", lastUpdated='" + getLastUpdated() + "'" +
-            ", user=" + getUser() +
             "}";
     }
 }
